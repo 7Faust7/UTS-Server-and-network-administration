@@ -1,0 +1,32 @@
+#run php apache
+FROM php:8.1-apache 
+
+#mengambil mysql mariaDB dari website Debian
+RUN echo "deb http://deb.debian.org/debian bullseye main contrib non-free" > /etc/apt/sources.list 
+
+#run intalasi,update dan unzip mysql
+RUN apt-get update && \
+    apt-get install -y default-mysql-client libzip-dev zip unzip && \
+    docker-php-ext-install mysqli pdo_mysql zip && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+#Configurasi apache
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+
+#sql dan php
+COPY index.php /var/www/html/index.php
+COPY redlock-db.sql /docker-entrypoint-initdb.d/redlock-db.sql
+
+#grants
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R u+rw,g+rw,o-rwx /var/www/html
+
+#rewrite apache
+RUN a2enmod rewrite
+
+RUN service apache2 restart
+#port
+EXPOSE 80
+#command for apache
+CMD ["apache2-foreground"]
