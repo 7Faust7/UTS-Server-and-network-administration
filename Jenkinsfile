@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+     environment {
+        DOCKER_PATH = 'C:\\path\\to\\docker\\executable'
+    }
+    
     stages {
         stage('Checkout') {
             steps {
