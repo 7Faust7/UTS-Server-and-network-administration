@@ -7,7 +7,9 @@ pipeline {
                 checkout scm
             }
         }
-        
+        echo "DOCKER_HOST: ${env.DOCKER_HOST}"
+        sh "docker version"
+
         stage('Build Docker Image') {
             steps {
             sh 'docker build -t redlock-web-2.0 .'
