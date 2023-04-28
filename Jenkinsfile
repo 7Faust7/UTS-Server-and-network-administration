@@ -24,4 +24,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh 'docker stop redlock-web-container || true'
-                sh '
+                sh 'docker rm redlock-web-container || true'
+                sh 'docker run -d --name redlock-web-container -p 7077:80 --link redlock-db-container:mysql redlock-web-2.0'
+            }
+        }
+    }
+}
