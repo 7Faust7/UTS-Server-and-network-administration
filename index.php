@@ -19,11 +19,12 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
+        $tot = $tot+1;
         echo "ID: ". $row["ID"]. " - Nama: ". $row["Nama"]. " - Alamat " . $row["Alamat"]. " - Jabatan " . $row["Jabatan"]. "<br>";
     }
 } else {
     echo "0 results";
 }
-
+echo "total users= ". "$tot";
 $conn->close();
 ?>
